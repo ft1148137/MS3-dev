@@ -4,3 +4,9 @@ I have install the H4R_EV3 on my ev3. But there is no battery display by this sy
 08_10_2019:
 I am thinking about to buy a chargeable battery. The battery by Lego cost 100 euro, emmmmm.
 I mount the Roboter and make some photo. I will upload them.
+
+09_10_2019: 
+I decide to use Rasberry with lego brick. That is enough for now. But later i want to use a camera to do localization.
+I guess Pi it not enough. Perhaps Jeston nano is a good choice. But Jeston nano does not support ros kinetic.So i should
+use melodic or make a serial synchro communication between pi and Jeston. But how? use boost::asio? or socket? I am not
+sure
