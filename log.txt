@@ -9,4 +9,18 @@ I mount the Roboter and make some photo. I will upload them.
 I decide to use Rasberry with lego brick. That is enough for now. But later i want to use a camera to do localization.
 I guess Pi it not enough. Perhaps Jeston nano is a good choice. But Jeston nano does not support ros kinetic.So i should
 use melodic or make a serial synchro communication between pi and Jeston. But how? use boost::asio? or socket? I am not
-sure
+sure.
+
+10_10_2019:
+I have install ros-melodic on Pi4(kinetic is not possible). following this Tutorial https://www.zouinstructables.com/id/ROS-Melodic-on-Raspberry-Pi-4-RPLIDAR/.
+But during installation i have got some broken pkg. download them manual and use dpkg force overwrite to fix this.
+after 1 hour complie i have install the ros on Raspbian in p4. But the apt can not get ros source tree in Raspbian(i guesse).
+So when i want install some dependence, i have to download them and complie them. I just put them in my workspace.
+Perhaps there are other way to install them in ros lib.
+
+The H4R_EV3´s sourece code have some problems by complie. It is possible, that the dependence in melodic have changed.
+I have changed source code and now it running. I am thinking about using ev3dev wiht dokcer to use cross-complie in Rasberry,
+because the resource in pi4 is not enough for complie. But now my Laptop (in company) is limtited. I will try it later in 
+my private computer.
+
+

@@ -1,0 +1,21 @@
+Ev3Color:
+  type: h4r_ev3_control/Ev3ColorController
+  frame_id: color_link
+  topic_name: /color
+  publish_rate: 10
+  port: in3
+  mode: rgb_raw 
+
+#Mode:
+# rgb_raw
+# color
+  #0   none
+  #1   black
+  #2   blue
+  #3   green
+  #4   yellow
+  #5   red
+  #6   white
+  #7   brown
+# ambient    
+# reflect

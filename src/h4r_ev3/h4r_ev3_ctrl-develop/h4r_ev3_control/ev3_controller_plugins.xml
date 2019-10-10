@@ -1,0 +1,32 @@
+<library path="lib/libev3_controllers">
+  <class name="h4r_ev3_control/Ev3UltrasonicController" type="ev3_control::Ev3UltrasonicController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes sonar sensor readings to the appropriate topic according to the selected mode
+  </description>
+  </class>
+  
+  <class name="h4r_ev3_control/Ev3GyroController" type="ev3_control::Ev3GyroController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes Gyro sensor readings
+  </description>
+  </class>
+
+   <class name="h4r_ev3_control/Ev3TouchController" type="ev3_control::Ev3TouchController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes Touch sensor readings
+  </description>
+  </class>
+  
+   <class name="h4r_ev3_control/Ev3ColorController" type="ev3_control::Ev3ColorController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes Color sensor readings
+  </description>
+  </class>      
+   <class name="h4r_ev3_control/Ev3InfraredController" type="ev3_control::Ev3InfraredController" base_class_type="controller_interface::ControllerBase">
+  <description>
+	This controller publishes infrared sensor readings
+  </description>
+  </class>     
+  </library>
+
+

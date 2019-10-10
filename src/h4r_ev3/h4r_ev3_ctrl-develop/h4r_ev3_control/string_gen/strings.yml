@@ -1,0 +1,78 @@
+strings:
+  #Port Drivers
+  ev3_port_drivers:
+    legoev3-input-port:
+    legoev3-input-outport:
+
+  #Port modes
+  ev3_port_status:
+    no-connect:
+    ev3-uart:
+    ev3-analog:
+  
+  #Driver names
+  ev3_driver_name:
+    lego-ev3-touch:
+    lego-ev3-color:
+    lego-ev3-us:
+    lego-ev3-gyro:
+    lego-ev3-ir:
+    
+  #Gyro modess
+  ev3_gyro_mode:
+    GYRO-ANG: 
+    GYRO-RATE:
+    GYRO-FAS: 
+    GYRO-G&A: GYRO_G_A
+    GYRO-CAL:
+  
+  #Ultrasonic modes
+  ev3_ultrasonic_mode:
+    US-DIST-CM:
+    US-DIST-IN:
+    US-LISTEN:
+    US-SI-CM:
+    US-SI-IN:
+    US-DC-CM:
+    US-DC-IN:
+  
+  #Color modes
+  ev3_color_mode:
+    COL-REFLECT:
+    COL-AMBIENT:
+    COL-COLOR:
+    REF-RAW:
+    RGB-RAW:
+    COL-CAL:
+  
+  ev3_touch_mode:
+    TOUCH:
+  
+  ev3_infrared_mode:
+    IR-PROX:
+    IR-SEEK:
+    IR-REMOTE:
+    IR-REM-A:
+    IR-S-ALT:
+    IR-CAL:
+    
+  
+  ev3_motor_commands:
+    run-forever: 
+    run-to-abs-pos: 
+    run-to-rel-pos: 
+    run-timed:
+    run-direct: 
+    stop:
+    reset:
+    
+  ev3_switch:
+    'on':  #TODO: Why do i need to set that in '', WTF ?
+    'off':
+ 
+  ev3_polarity:
+    normal:
+    inversed:
+
+
+    
