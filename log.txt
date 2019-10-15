@@ -24,3 +24,6 @@ because the resource in pi4 is not enough for complie. But now my Laptop (in com
 my private computer.
 
 
+15.10.2019:
+I have try to setup H4R_EV3 in last 3 days. But the package is always running with problems. I will try it once agin.
+otherweis i will write a new one with ev3dev and ros_control.
