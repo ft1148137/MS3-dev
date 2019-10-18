@@ -3,7 +3,7 @@ Ev3Color:
   frame_id: color_link
   topic_name: /color
   publish_rate: 10
-  port: in3
+  port: in4
   mode: rgb_raw 
 
 #Mode:
