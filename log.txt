@@ -27,3 +27,8 @@ my private computer.
 15.10.2019:
 I have try to setup H4R_EV3 in last 3 days. But the package is always running with problems. I will try it once agin.
 otherweis i will write a new one with ev3dev and ros_control.
+
+23.10.2019
+I finsih the line follower and upload the programm and the path.now i am writing the datafusion with Kalmanfilter.
+I need to use ROS message_filter and ntp to synchro the message from pi and lego brick.i make 7 dimension kalmanfiler.torrow
+i will test it with line follower. 
