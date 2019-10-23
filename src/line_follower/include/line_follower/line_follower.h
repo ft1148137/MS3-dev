@@ -6,7 +6,9 @@
 #include <std_msgs/Header.h>
 #include <geometry_msgs/Twist.h>
 #include <sensor_msgs/JointState.h>
-#include "line_follower/pid.h"
+#include <line_follower/pid.h>
+
+
 class line_follower
 {	public:
 	line_follower(ros::NodeHandle &nh);
@@ -29,19 +31,33 @@ class line_follower
 	std_msgs::ColorRGBA color_now;
 	std::vector<geometry_msgs::Twist> motor_encoder_buffer;
 	geometry_msgs::Twist control_message_to_pub;
-	
-	double PID_PARM[3];
-	double PID_state[3];
-	double COLOR_RGB_THRESHOLD[3];
-	double COLOR_RGB_CALIB[3];
 	int turned = 0;
 	int stoped = 0;
+
+	
+	double PID_PARM[3];
+	double PID_state[3];		
+	int PID_MAX;
+	int PID_MIN;
+	double COLOR_RGB_THRESHOLD[3];
+	double COLOR_RGB_CALIB[3];
+	int BLACK_RGB_THRESHOLD;
+	double STOP_DELAY;
+	double TURN_DELY;
+	double TURN_SPEED;
+	double TURN_DIR;
+	double LINEAR_SPEED;
+	
+	
+	
+	geometry_msgs::Twist gyro_data;
 
 	void geometry_odom_vel_callback(geometry_msgs::Twist geo_msg);
 	void color_sensor_callback(std_msgs::ColorRGBA color_);	
 	void data_fusion_callback();
 	void motor_controller_callback(const ros::TimerEvent& event);
 	double PID_regler(const double &error_);
+
 	
 	};
 #endif

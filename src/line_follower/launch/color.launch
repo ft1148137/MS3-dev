@@ -1,0 +1,11 @@
+<launch>
+	 <group ns="ev3dev">
+	 		<!-- Load joint controller configurations from YAML file to parameter server -->
+	  	<rosparam file="$(find line_follower)/config/color.yaml" command="load"/>
+	
+	  	<!-- load the controllers -->
+	  	<node name="ev3_sensor_spawner" pkg="controller_manager" type="spawner" respawn="false"
+	    output="screen" args="Ev3Color"/>
+	</group>	  	
+</launch>
+ 
