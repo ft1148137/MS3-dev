@@ -4,5 +4,5 @@
         <param name="address" type="int" value="40"/> <!-- 0x28 == 40 is the default for BNO055 -->
         <param name="frame_id" type="string" value="imu_link"/>
     </node>
-    <node pkg="tf" type="static_transform_publisher" name ="imu_tf" args = "0.2 0 0.6 0 0 1.571 base_link imu_link 100"/>
+    <node pkg="tf" type="static_transform_publisher" name ="imu_tf" args = "0.2 0 0.6 1.571 0 0  base_link imu_link 100"/>
 </launch>

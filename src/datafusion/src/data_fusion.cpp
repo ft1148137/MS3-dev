@@ -3,12 +3,12 @@
 data_fusion::data_fusion(ros::NodeHandle &nh):n(nh)
 {
 	encoder_sub.subscribe(n,"/ev3dev/diffDrv/odom",1);
-	EKF_Pub = n.advertise<geometry_msgs::Twist>("/EKF_Topic",10);
+	EKF_Pub = n.advertise<nav_msgs::Odometry>("/EKF_Topic",10);
 	IMU_sub.subscribe(n,"/imu/data",1);
 	sync.reset(new Sync(syncPolic_(10),encoder_sub,IMU_sub));
     sync -> registerCallback(boost::bind(&data_fusion::sync_callback,this,_1,_2));	
 	
-	this->setQ(0, 0, 1);
+    this->setQ(0, 0, 1);
     this->setQ(1, 1, 1);
     this->setQ(2, 2, 1);
     this->setQ(3, 3, 1);
@@ -18,11 +18,11 @@ data_fusion::data_fusion(ros::NodeHandle &nh):n(nh)
     
     this->setR(0, 0, 0.1);
     this->setR(1, 1, 0.1);
-    this->setR(2, 2, 0.1);
+    this->setR(2, 2, 1);
     this->setR(3, 3, 0.1);
     this->setR(4, 4, 0.1);
-    this->setR(5, 5, 0.1);
-    this->setR(6, 6, 0.1);
+    this->setR(5, 5, 1);
+    this->setR(6, 6, 1);
 	
 	
 	}
@@ -35,12 +35,12 @@ void data_fusion::model(double fx[Nsta], double F[Nsta][Nsta], double hx[Mobs], 
         {   
 			Freq_ = 10;
 			
-            fx[0] = this->x[0];
-            fx[1] = this->x[1];
+            fx[0] = this->x[0] + (this->x[1])/Freq_ + 0.5*(this->x[2])/(Freq_*Freq_);
+            fx[1] = this->x[2]/Freq_ + this->x[1];
             fx[2] = this->x[2];
-            
-            fx[3] = this->x[3];
-            fx[4] = this->x[4];
+                     
+            fx[3] = this->x[3] + (this->x[4])/Freq_ + 0.5*(this->x[5])/(Freq_*Freq_);
+            fx[4] = this->x[5]/Freq_ + this->x[4];
             fx[5] = this->x[5];
             
             fx[6] = this->x[6];
@@ -73,10 +73,10 @@ void data_fusion::model(double fx[Nsta], double F[Nsta][Nsta], double hx[Mobs], 
             hx[6] = this->x[6]; 
 
             H[0][0] = 1;   
-            H[1][1] = 1;  
+            H[1][1] = 0;  
             H[2][2] = 1;  
             H[3][3] = 1;   
-            H[4][4] = 1;  
+            H[4][4] = 0;  
             H[5][5] = 1; 
             H[6][6] = 1;   
     
@@ -85,17 +85,38 @@ void data_fusion::model(double fx[Nsta], double F[Nsta][Nsta], double hx[Mobs], 
 void data_fusion::data_fusion_core(){
 	   ROS_INFO("size; %d  %d",gyro_data_buffer.size(),encoder_data_buffer.size());
 	   if(gyro_data_buffer.size() && encoder_data_buffer.size()){
-			   gyro_translation_link.header = gyro_data_buffer[0].header;
+			   //gyro_translation_link.header.stamp = ros::Time::now();
+			   gyro_translation_link.header= gyro_data_buffer[0].header;
 			   gyro_translation_link.vector = gyro_data_buffer[0].linear_acceleration;
-			   gyro_rotation_link.header = gyro_data_buffer[0].header;
+			   //gyro_rotation_link.header.stamp = ros::Time::now();
+			   gyro_rotation_link.header= gyro_data_buffer[0].header;
 			   gyro_rotation_link.quaternion = gyro_data_buffer[0].orientation;
 			   try
 			   {
-			   listener.transformVector("base_link",gyro_translation_link,gyro_translation_base);
-			   listener.transformQuaternion("base_link",gyro_rotation_link,gyro_rotation_base);}
+			   listener.waitForTransform("base_link","imu_link",ros::Time::now(),ros::Duration(0.1));
+			   listener.transformVector("base_link",ros::Time::now(),gyro_translation_link,"imu_link",gyro_translation_base);
+			   listener.transformQuaternion("base_link",ros::Time::now(),gyro_rotation_link,"imu_link",gyro_rotation_base);
+			   }
 			   catch(tf::TransformException& ex){
 				   ROS_ERROR("%s",ex.what());
 				   }
+			  /* ROS_INFO("imu_link x: %f",gyro_translation_link.vector.x);
+			   ROS_INFO("imu_link y: %f",gyro_translation_link.vector.y);
+			   ROS_INFO("imu_link z: %f",gyro_translation_link.vector.z);
+			   ROS_INFO("imu_link r: %f",gyro_rotation_link.quaternion.x);
+			   ROS_INFO("imu_link p: %f",gyro_rotation_link.quaternion.y);
+			   ROS_INFO("imu_link y: %f",gyro_rotation_link.quaternion.z);	   
+			   
+			   ROS_INFO("base_link x: %f",gyro_translation_base.vector.x);
+			   ROS_INFO("base_link y: %f",gyro_translation_base.vector.y);
+			   ROS_INFO("base_link z: %f",gyro_translation_base.vector.z);
+			   ROS_INFO("base_link r: %f",gyro_rotation_base.quaternion.x);
+			   ROS_INFO("base_link p: %f",gyro_rotation_base.quaternion.y);
+			   ROS_INFO("base_link y: %f",gyro_rotation_base.quaternion.z);	*/
+			   //tf::Quaternion q(gyro_rotation_link.quaternion.x,gyro_rotation_link.quaternion.y,gyro_rotation_link.quaternion.z,gyro_rotation_link.quaternion.w);
+			   //tf::Matrix3x3 euler_m(q);
+			  // double euler[3];
+			  // euler_m.getRPY(euler[0],euler[1],euler[2]);
 			   double sensor_data[7] = {
 										encoder_data_buffer[0].pose.pose.position.x,
 										encoder_data_buffer[0].twist.twist.linear.x,
@@ -103,14 +124,42 @@ void data_fusion::data_fusion_core(){
 										encoder_data_buffer[0].pose.pose.position.y,
 										encoder_data_buffer[0].twist.twist.linear.y,
 										gyro_translation_base.vector.y,
-										gyro_rotation_base.quaternion.z
+										0
 										};
 			 	step(sensor_data);
-				std::cout<<"X: "<<getX(0)<<"\n";
+				/*std::cout<<"X: "<<getX(0)<<"\n";
 				std::cout<<"X': "<<getX(1)<<"\n";
 				std::cout<<"X'': "<<getX(2)<<"\n";
+				std::cout<<"y: "<<getX(3)<<"\n";
+				std::cout<<"y': "<<getX(4)<<"\n";
+				std::cout<<"y'': "<<getX(5)<<"\n";
+				std::cout<<"um x: "<<euler[0]<<"\n";
+				std::cout<<"um y: "<<euler[1]<<"\n";
+				std::cout<<"um z: "<<euler[2]<<"\n";
+				* */
 				encoder_data_buffer.erase(encoder_data_buffer.begin());
 				gyro_data_buffer.erase(gyro_data_buffer.begin());
+				
+				nav_msgs::Odometry msg_to_pub;
+				msg_to_pub.header.stamp = ros::Time::now();
+				msg_to_pub.header.frame_id = "odom_ekf";
+				msg_to_pub.pose.pose.position.x = getX(0);
+				msg_to_pub.pose.pose.position.y = getX(3);
+				msg_to_pub.pose.pose.position.z = 0;
+				msg_to_pub.pose.pose.orientation.x = gyro_rotation_base.quaternion.x;
+				msg_to_pub.pose.pose.orientation.y=  gyro_rotation_base.quaternion.y;
+				msg_to_pub.pose.pose.orientation.z =  gyro_rotation_base.quaternion.z;
+				msg_to_pub.pose.pose.orientation.w =  gyro_rotation_base.quaternion.w;
+				EKF_Pub.publish(msg_to_pub);
+
+
+	          //  tf::Transform transform_ekf;
+	          //  tf::Quaternion quaternion;
+	          //  quaternion.setRPY(0,0,euler[2]);
+	          //  transform_ekf.setOrigin(tf::Vector3(getX(0),getX(3),0));
+	          //  transform_ekf.setRotation(quaternion);
+	          //  odom_ekf.sendTransform(tf::StampedTransform(transform_ekf,gyro_translation_link.header.stamp,"/world","base_link"));
+
 			   }
 			
 	}	
@@ -129,7 +178,7 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "data_fusion");
 	ros::NodeHandle nh;
 	data_fusion* data_fusion_ = new data_fusion(nh);
-	ros::Rate r(100);
+	ros::Rate r(50);
 	while(ros::ok()){
 		data_fusion_ -> data_fusion_core();
 		ros::spinOnce();

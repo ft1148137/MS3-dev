@@ -32,3 +32,7 @@ otherweis i will write a new one with ev3dev and ros_control.
 I finsih the line follower and upload the programm and the path.now i am writing the datafusion with Kalmanfilter.
 I need to use ROS message_filter and ntp to synchro the message from pi and lego brick.i make 7 dimension kalmanfiler.torrow
 i will test it with line follower. 
+
+25.10.2019:
+I have made the tf tree and EKF for LEGO. Now i can see the all data in rviz. The problem now is how can i calibrate the bno55 and set the parameter for ekf.
+I am not sure how to set the cov-matrics. After calibration i will test the EKF with line follower and try to find the right parameter for ekf
