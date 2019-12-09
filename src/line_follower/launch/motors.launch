@@ -7,6 +7,7 @@
 	  	<!-- load the controllers -->
 	  	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
 	    output="screen" args="OutPortState diffDrv"/>
+		<node pkg="tf" type="static_transform_publisher" name ="wheel_tf" args = "0 0 0 3.141 0 0  base_link wheel_link 100"/>
 	</group>		
 </launch>
  

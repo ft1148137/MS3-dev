@@ -33,7 +33,7 @@ void line_follower::init(){
 	//TURN_SPEED = -1;
 	TURN_SPEED = -0.9;
 	TURN_DIR = -1;
-	LINEAR_SPEED = 0.05;
+	LINEAR_SPEED = 0.03;
 	}
 void line_follower::color_sensor_callback(std_msgs::ColorRGBA color_){
 	color_now = color_;

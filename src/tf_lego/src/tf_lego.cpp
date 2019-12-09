@@ -8,8 +8,7 @@
      tf::Transform transform;
      
      transform.setOrigin( tf::Vector3(msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z) );
-     tf::Quaternion q;
-     q.setRPY(0, 0, msg.pose.pose.orientation.x);
+     tf::Quaternion q(msg.pose.pose.orientation.x,msg.pose.pose.orientation.y,msg.pose.pose.orientation.z,msg.pose.pose.orientation.w);
      transform.setRotation(q);
      lego_br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "/world", "odom"));
    }
@@ -17,8 +16,7 @@
      static tf::TransformBroadcaster lego_br_ekf;
      tf::Transform transform;
      transform.setOrigin( tf::Vector3(msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z) );
-     tf::Quaternion q;
-     q.setRPY(0, 0, msg.pose.pose.orientation.x);
+     tf::Quaternion q(msg.pose.pose.orientation.x,msg.pose.pose.orientation.y,msg.pose.pose.orientation.z,msg.pose.pose.orientation.w);
      transform.setRotation(q);
      lego_br_ekf.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "/world", "odom_ekf"));
    }
